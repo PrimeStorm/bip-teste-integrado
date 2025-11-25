@@ -27,6 +27,10 @@ export class BeneficioService {
   transferir(fromId: number, toId: number, amount: number): Observable<any> {
     const payload = { fromId, toId, amount };
     // Chama o endpoint POST /transfer
-    return this.http.post(`${this.apiUrl}/transfer`, payload);
+    //return this.http.post(`${this.apiUrl}/transfer`, payload);
+    // para evitar erro de JSON vazio
+    return this.http.post(`${this.apiUrl}/transfer`, payload, {
+      responseType: 'text' as 'json'
+    });
   }
 }

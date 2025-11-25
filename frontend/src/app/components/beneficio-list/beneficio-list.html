@@ -44,8 +44,11 @@
         <input type="number" [(ngModel)]="valor" placeholder="0.00" >
       </div>
 
-      <button (click)="realizarTransferencia()" style="padding: 5px 15px; background-color: #007bff; color: white; border: none; cursor: pointer; height: 30px;">
-        Transferir
+      <button (click)="realizarTransferencia()" 
+              [disabled]="carregando" 
+              [style.background-color]="carregando ? '#ccc' : '#007bff'"
+              style="padding: 5px 15px; color: white; border: none; cursor: pointer; height: 30px;">
+              {{ carregando ? 'Aguarde...' : 'Transferir' }}
       </button>
     </div>
 
