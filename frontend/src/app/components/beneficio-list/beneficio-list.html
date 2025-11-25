@@ -1,0 +1,51 @@
+<div style="padding: 20px; font-family: Arial, sans-serif;">
+  <h1> Gestão de Benefícios</h1>
+
+  <table border="1" cellpadding="10" style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">
+    <thead>
+      <tr style="background-color: #f0f0f0;">
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Saldo (R$)</th>
+        <th>Versão</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let b of beneficios">
+        <td>{{ b.id }}</td>
+        <td>{{ b.nome }}</td>
+        <td style="font-weight: bold; color: green;">R$ {{ b.valor }}</td>
+        <td>{{ b.version }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <div style="background-color: #eef; padding: 20px; border-radius: 8px;">
+    <h2> Nova Transferência</h2>
+    
+    <div style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
+      <div>
+        <label>De (ID):</label><br>
+        <input type="number" [(ngModel)]="origemId" placeholder="ID Origem">
+      </div>
+      
+      <div>
+        <label>Para (ID):</label><br>
+        <input type="number" [(ngModel)]="destinoId" placeholder="ID Destino">
+      </div>
+
+      <div>
+        <label>Valor:</label><br>
+        <input type="number" [(ngModel)]="valor" placeholder="0.00">
+      </div>
+
+      <button (click)="realizarTransferencia()" style="padding: 5px 15px; background-color: #007bff; color: white; border: none; cursor: pointer; height: 30px;">
+        Transferir
+      </button>
+    </div>
+
+    <p style="margin-top: 10px; font-weight: bold; color: red;">{{ mensagem }}</p>
+  </div>
+</div>
