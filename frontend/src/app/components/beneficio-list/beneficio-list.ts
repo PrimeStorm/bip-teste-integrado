@@ -25,6 +25,11 @@ export class BeneficioListComponent implements OnInit {
     this.carregarDados();
   }
 
+  limparFormulario() {
+    this.valor = null;
+    this.origemId = null;
+    this.destinoId = null;
+  }
   carregarDados() {
     this.service.listar().subscribe({
       next: (dados) => this.beneficios = dados,
@@ -37,12 +42,24 @@ export class BeneficioListComponent implements OnInit {
       this.mensagem = 'Preencha todos os campos!';
       return;
     }
+    
+    // Validação: Valor Negativo ou Zero
+    if (this.valor <= 0) {
+      this.mensagem = 'O valor deve ser maior que zero!';
+      return;
+    }
+
+    // Validação: Transferência para a mesma conta
+    if (this.origemId === this.destinoId) {
+      this.mensagem = 'Origem e Destino não podem ser iguais!!';
+      return;
+    }
 
     this.service.transferir(this.origemId, this.destinoId, this.valor).subscribe({
       next: () => {
         this.mensagem = 'Transferência realizada com sucesso!';
-        this.carregarDados(); 
-        this.limparFormulario();
+        this.carregarDados();
+        this.limparFormulario();       
       },
       error: (err) => {
         // Pega a mensagem de erro ou usa uma genérica
@@ -50,11 +67,5 @@ export class BeneficioListComponent implements OnInit {
         this.mensagem = 'Erro: ' + msgErro;
       }
     });
-  }
-
-  limparFormulario() {
-    this.valor = null;
-    this.origemId = null;
-    this.destinoId = null;
   }
 }

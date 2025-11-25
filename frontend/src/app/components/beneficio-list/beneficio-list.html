@@ -1,5 +1,8 @@
 <div style="padding: 20px; font-family: Arial, sans-serif;">
   <h1> Gestão de Benefícios</h1>
+  <button (click)="carregarDados()" title="Atualizar Lista" style="cursor: pointer; padding: 5px 10px; font-size: 16px;">
+      🔄 Atualizar
+  </button>
 
   <table border="1" cellpadding="10" style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">
     <thead>
@@ -28,17 +31,17 @@
     <div style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
       <div>
         <label>De (ID):</label><br>
-        <input type="number" [(ngModel)]="origemId" placeholder="ID Origem">
+        <input type="number" [(ngModel)]="origemId" placeholder="ID Origem" min="1">
       </div>
       
       <div>
         <label>Para (ID):</label><br>
-        <input type="number" [(ngModel)]="destinoId" placeholder="ID Destino">
+        <input type="number" [(ngModel)]="destinoId" placeholder="ID Destino" min="1">
       </div>
 
       <div>
         <label>Valor:</label><br>
-        <input type="number" [(ngModel)]="valor" placeholder="0.00">
+        <input type="number" [(ngModel)]="valor" placeholder="0.00" >
       </div>
 
       <button (click)="realizarTransferencia()" style="padding: 5px 15px; background-color: #007bff; color: white; border: none; cursor: pointer; height: 30px;">

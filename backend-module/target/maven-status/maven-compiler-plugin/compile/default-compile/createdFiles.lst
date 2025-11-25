@@ -1,0 +1,4 @@
+com\example\backend\BackendApplication.class
+com\example\backend\BeneficioRepository.class
+com\example\backend\BeneficioController.class
+com\example\backend\BeneficioController$TransferenciaDTO.class
