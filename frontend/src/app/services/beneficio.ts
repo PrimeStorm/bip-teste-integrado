@@ -22,6 +22,15 @@ export class BeneficioService {
   listar(): Observable<Beneficio[]> {
     return this.http.get<Beneficio[]>(this.apiUrl);
   }
+  // Criar (POST)
+  criar(beneficio: Partial<Beneficio>): Observable<Beneficio> {
+    return this.http.post<Beneficio>(this.apiUrl, beneficio);
+  }
+
+  // Deletar (DELETE)
+  remover(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
 
   // Realiza a transferência
   transferir(fromId: number, toId: number, amount: number): Observable<any> {

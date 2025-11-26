@@ -16,6 +16,8 @@ export class BeneficioListComponent implements OnInit {
   origemId: number | null = null;
   destinoId: number | null = null;
   valor: number | null = null;
+  novoNome: string = '';
+  novoValor: number | null = null;
   mensagem: string = '';
   carregando: boolean = false;
 
@@ -28,10 +30,40 @@ export class BeneficioListComponent implements OnInit {
     this.carregarDados();
   }
 
+  // Função para criar conta
+  criarBeneficio() {
+    if (!this.novoNome || !this.novoValor) {
+      alert('Preencha nome e valor inicial!');
+      return;
+    }
+
+    // Cria o objeto parcial para enviar
+    const novo = { 
+      nome: this.novoNome, 
+      valor: this.novoValor, 
+      descricao: 'Nova Conta Criada' 
+    };    
+    this.service.criar(novo).subscribe(() => {
+      this.carregarDados(); // Atualiza a lista
+      this.limparFormulario(); // Limpa os inputs
+    });
+  }
+
+  // Função para deletar conta
+  deletarBeneficio(id: number) {
+    if(confirm('Tem certeza que deseja excluir esta conta?')) {
+      this.service.remover(id).subscribe(() => {
+        this.carregarDados(); // Atualiza a lista apos remover
+      });
+    }
+  }
+
   limparFormulario() {
     this.valor = null;
     this.origemId = null;
     this.destinoId = null;
+    this.novoNome = '';
+    this.novoValor = null;
   }
   carregarDados() {
     this.service.listar().subscribe({
@@ -64,13 +96,11 @@ export class BeneficioListComponent implements OnInit {
       .pipe(      
         finalize(() => {
           this.carregando = false;
-          this.cd.detectChanges(); //força atualização da view
-          //console.log("Processo finalizado.");
+          this.cd.detectChanges(); //força atualização da view 
         })
       ).subscribe({
         next: (resp) => {
           // Sucesso
-          //console.log('Resposta do Java:', resp);
           this.mensagem = 'Transferência realizada com sucesso!';
           this.carregarDados();    // Atualiza a tabela
           this.limparFormulario(); // Limpa os inputs

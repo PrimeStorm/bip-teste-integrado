@@ -55,4 +55,12 @@ public class Beneficio {
          return version; 
     }
     
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+    
 }

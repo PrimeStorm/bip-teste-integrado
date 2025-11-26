@@ -39,6 +39,26 @@ public class BeneficioController {
         }
     }
 
+    // 3. Criar novo benefício (CREATE)
+    @PostMapping
+    public Beneficio create(@RequestBody Beneficio beneficio) {
+        // Define valores padrão para garantir segurança
+        beneficio.setAtivo(true);
+        // Zera o ID para o banco gerar um novo
+        beneficio.setId(null); 
+        return repository.save(beneficio);
+    }
+
+    // 4. Deletar benefício (DELETE)
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     // DTO auxiliar para receber o JSON
     public record TransferenciaDTO(Long fromId, Long toId, BigDecimal amount) {}
 }

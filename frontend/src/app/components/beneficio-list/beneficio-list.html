@@ -1,9 +1,23 @@
 <div style="padding: 20px; font-family: Arial, sans-serif;">
-  <h1> Gestão de Benefícios</h1>
-  <button (click)="carregarDados()" title="Atualizar Lista" style="cursor: pointer; padding: 5px 10px; font-size: 16px;">
+  
+  <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+    <h1>💰 Gestão de Benefícios</h1>
+    <button (click)="carregarDados()" title="Atualizar Lista" style="cursor: pointer; padding: 5px 10px; font-size: 16px;">
       🔄 Atualizar
-  </button>
+    </button>
+  </div>
 
+  <div style="background-color: #e8f5e9; padding: 15px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #c8e6c9; display: flex; align-items: center; gap: 10px;">
+    <strong>➕ Novo Benefício:</strong>
+    
+    <input type="text" [(ngModel)]="novoNome" placeholder="Nome (ex: Bônus)" style="padding: 5px;">
+    
+    <input type="number" [(ngModel)]="novoValor" placeholder="Valor Inicial" style="padding: 5px;">
+    
+    <button (click)="criarBeneficio()" style="background-color: #28a745; color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px;">
+      Adicionar
+    </button>
+  </div>
   <table border="1" cellpadding="10" style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">
     <thead>
       <tr style="background-color: #f0f0f0;">
@@ -11,7 +25,7 @@
         <th>Nome</th>
         <th>Saldo (R$)</th>
         <th>Versão</th>
-      </tr>
+        <th>Ações</th> </tr>
     </thead>
     <tbody>
       <tr *ngFor="let b of beneficios">
@@ -19,36 +33,45 @@
         <td>{{ b.nome }}</td>
         <td style="font-weight: bold; color: green;">R$ {{ b.valor }}</td>
         <td>{{ b.version }}</td>
-      </tr>
+        
+        <td style="text-align: center;">
+          <button (click)="deletarBeneficio(b.id)" title="Excluir Conta" style="background-color: #dc3545; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;">
+            X
+          </button>
+        </td>
+        </tr>
     </tbody>
   </table>
 
   <hr>
 
-  <div style="background-color: #eef; padding: 20px; border-radius: 8px;">
-    <h2> Nova Transferência</h2>
+  <div style="background-color: #eef; padding: 20px; border-radius: 8px; margin-top: 20px;">
+    <h2>💸 Nova Transferência</h2>
     
     <div style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
       <div>
         <label>De (ID):</label><br>
-        <input type="number" [(ngModel)]="origemId" placeholder="ID Origem" min="1">
+        <input type="number" [(ngModel)]="origemId" placeholder="ID Origem" min="1" style="padding: 5px;">
       </div>
       
       <div>
         <label>Para (ID):</label><br>
-        <input type="number" [(ngModel)]="destinoId" placeholder="ID Destino" min="1">
+        <input type="number" [(ngModel)]="destinoId" placeholder="ID Destino" min="1" style="padding: 5px;">
       </div>
 
       <div>
         <label>Valor:</label><br>
-        <input type="number" [(ngModel)]="valor" placeholder="0.00" >
+        <input type="number" [(ngModel)]="valor" placeholder="0.00" style="padding: 5px;">
       </div>
 
-      <button (click)="realizarTransferencia()" 
-              [disabled]="carregando" 
-              [style.background-color]="carregando ? '#ccc' : '#007bff'"
-              style="padding: 5px 15px; color: white; border: none; cursor: pointer; height: 30px;">
-              {{ carregando ? 'Aguarde...' : 'Transferir' }}
+      <button 
+        (click)="realizarTransferencia()" 
+        [disabled]="carregando"
+        [style.background-color]="carregando ? '#ccc' : '#007bff'"
+        style="padding: 5px 15px; color: white; border: none; cursor: pointer; height: 30px; border-radius: 4px;">
+        
+        {{ carregando ? 'Aguarde...' : 'Transferir' }}
+      
       </button>
     </div>
 
