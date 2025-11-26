@@ -7,12 +7,14 @@
     </button>
   </div>
 
-  <div style="background-color: #e8f5e9; padding: 15px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #c8e6c9; display: flex; align-items: center; gap: 10px;">
+  <div style="background-color: #e8f5e9; padding: 15px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #c8e6c9; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
     <strong>➕ Novo Benefício:</strong>
     
     <input type="text" [(ngModel)]="novoNome" placeholder="Nome (ex: Bônus)" style="padding: 5px;">
     
-    <input type="number" [(ngModel)]="novoValor" placeholder="Valor Inicial" style="padding: 5px;">
+    <input type="text" [(ngModel)]="novaDescricao" placeholder="Descrição (Opcional)" style="padding: 5px; width: 200px;">
+    
+    <input type="number" [(ngModel)]="novoValor" placeholder="Valor Inicial" style="padding: 5px; width: 100px;">
     
     <button (click)="criarBeneficio()" style="background-color: #28a745; color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px;">
       Adicionar
@@ -23,6 +25,7 @@
       <tr style="background-color: #f0f0f0;">
         <th>ID</th>
         <th>Nome</th>
+        <th>Descrição</th>
         <th>Saldo (R$)</th>
         <th>Versão</th>
         <th>Ações</th> </tr>
@@ -31,6 +34,7 @@
       <tr *ngFor="let b of beneficios">
         <td>{{ b.id }}</td>
         <td>{{ b.nome }}</td>
+        <td style="color: rgb(122, 137, 113); font-style: italic;">{{ b.descricao }}</td>
         <td style="font-weight: bold; color: green;">R$ {{ b.valor }}</td>
         <td>{{ b.version }}</td>
         

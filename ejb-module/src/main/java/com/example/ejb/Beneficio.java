@@ -54,7 +54,7 @@ public class Beneficio {
     public Long getVersion() {
          return version; 
     }
-    
+
     public Boolean getAtivo() {
         return ativo;
     }
@@ -63,4 +63,11 @@ public class Beneficio {
         this.ativo = ativo;
     }
     
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 }

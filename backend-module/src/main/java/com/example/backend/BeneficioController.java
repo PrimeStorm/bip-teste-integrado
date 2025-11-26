@@ -2,54 +2,56 @@ package com.example.backend;
 
 import com.example.ejb.Beneficio;
 import com.example.ejb.BeneficioEjbService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.math.BigDecimal;
-
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/beneficios")
-@CrossOrigin(origins = "*") // Permite que o Angular acesse sem bloqueio
+@CrossOrigin(origins = "http://localhost:4200")
+@Tag(name = "Benefícios", description = "Gerenciamento de contas e transferências") // Título no Swagger
 public class BeneficioController {
 
     @Autowired
-    private BeneficioRepository repository; // Para leitura (CRUD)
+    private BeneficioRepository repository;
 
     @Autowired
-    private BeneficioEjbService ejbService; // Para regra de negócio (Transferência)
+    private BeneficioEjbService ejbService;
 
-    // 1. Listar todos (GET)
+    @Operation(summary = "Listar todas as contas", description = "Retorna a lista completa de benefícios com saldo atualizado.")
     @GetMapping
     public List<Beneficio> list() {
         return repository.findAll();
     }
 
-    // 2. Realizar Transferência (POST)
+    @Operation(summary = "Criar nova conta", description = "Cria um novo benefício com saldo inicial.")
+    @PostMapping
+    public Beneficio create(@RequestBody Beneficio beneficio) {
+        beneficio.setAtivo(true);
+        beneficio.setId(null);
+        return repository.save(beneficio);
+    }
+
+    @Operation(summary = "Realizar Transferência", description = "Transfere valores entre contas com validação de saldo e concorrência (Optimistic Locking).")
+    @ApiResponse(responseCode = "200", description = "Transferência realizada com sucesso")
+    @ApiResponse(responseCode = "400", description = "Erro de negócio (Saldo insuficiente, conta inválida)")
     @PostMapping("/transfer")
     public ResponseEntity<?> transfer(@RequestBody TransferenciaDTO dto) {
         try {
             ejbService.transfer(dto.fromId(), dto.toId(), dto.amount());
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            // Retorna erro 400 se saldo for insuficiente ou contas inválidas
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    // 3. Criar novo benefício (CREATE)
-    @PostMapping
-    public Beneficio create(@RequestBody Beneficio beneficio) {
-        // Define valores padrão para garantir segurança
-        beneficio.setAtivo(true);
-        // Zera o ID para o banco gerar um novo
-        beneficio.setId(null); 
-        return repository.save(beneficio);
-    }
-
-    // 4. Deletar benefício (DELETE)
+    @Operation(summary = "Remover conta", description = "Exclui um benefício do sistema pelo ID.")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         if (repository.existsById(id)) {
@@ -59,7 +61,6 @@ public class BeneficioController {
         return ResponseEntity.notFound().build();
     }
 
-    // DTO auxiliar para receber o JSON
     public record TransferenciaDTO(Long fromId, Long toId, BigDecimal amount) {}
 }
 

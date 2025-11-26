@@ -7,6 +7,7 @@ export interface Beneficio {
   nome: string;
   valor: number;
   version: number;
+  descricao?: string; // (é opcional)
 }
 
 @Injectable({

@@ -18,6 +18,7 @@ export class BeneficioListComponent implements OnInit {
   valor: number | null = null;
   novoNome: string = '';
   novoValor: number | null = null;
+  novaDescricao: string = '';
   mensagem: string = '';
   carregando: boolean = false;
 
@@ -41,7 +42,7 @@ export class BeneficioListComponent implements OnInit {
     const novo = { 
       nome: this.novoNome, 
       valor: this.novoValor, 
-      descricao: 'Nova Conta Criada' 
+      descricao: this.novaDescricao ? this.novaDescricao : 'Sem descrição'
     };    
     this.service.criar(novo).subscribe(() => {
       this.carregarDados(); // Atualiza a lista
@@ -64,6 +65,7 @@ export class BeneficioListComponent implements OnInit {
     this.destinoId = null;
     this.novoNome = '';
     this.novoValor = null;
+    this.novaDescricao = '';
   }
   carregarDados() {
     this.service.listar().subscribe({

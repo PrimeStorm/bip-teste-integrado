@@ -65,12 +65,15 @@ public class BeneficioIntegrationTest {
 
     // --- TESTES DO CRUD ---
 
-    @Test
-    @Transactional
+   @Test
+   @Transactional
     void deveCriarBeneficio() {
         Beneficio novo = new Beneficio();
         novo.setNome("Teste Criação");
         novo.setValor(new BigDecimal("150.00"));
+        
+        // [NOVO] Testando se a descrição é salva
+        novo.setDescricao("Descrição do Teste Automatizado");
 
         // Chama o controller para criar
         Beneficio criado = controller.create(novo);
@@ -78,6 +81,9 @@ public class BeneficioIntegrationTest {
         // Verifica se salvou no banco e gerou ID
         Assertions.assertNotNull(criado.getId());
         Assertions.assertEquals("Teste Criação", criado.getNome());
+        
+        // [NOVO] Valida se a descrição voltou correta
+        Assertions.assertEquals("Descrição do Teste Automatizado", criado.getDescricao());
         
         // Confirma no repositório
         Assertions.assertTrue(repository.existsById(criado.getId()));
